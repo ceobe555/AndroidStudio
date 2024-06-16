@@ -21,6 +21,8 @@ public class MyApplication extends Application {
     private static MyApplication mApp;
     // 声明一个公共的信息映射对象，可作为全局变量使用
     private static HashMap<String, String> infoMap = new HashMap<>();
+    // 购物车中的商品数量
+    public int goodsCount;
     public static MyApplication getInstance() {
         return mApp;
     }

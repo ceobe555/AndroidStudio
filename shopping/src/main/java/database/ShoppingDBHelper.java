@@ -2,11 +2,15 @@ package database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.ListFormatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import entities.CartInfo;
 import entities.GoodsInfo;
 
 public class ShoppingDBHelper extends SQLiteOpenHelper {
@@ -90,4 +94,108 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
             mWDB.endTransaction();
         }
     }
+    // 查询所有商品信息
+    public List<GoodsInfo> queryAllGoodsInfo() {
+        String sql = "SELECT * FROM " + TABLE_GOODS_INFO;
+        List<GoodsInfo> list = new ArrayList<>();
+        Cursor cursor = mRDB.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            GoodsInfo info = new GoodsInfo();
+            info.id = cursor.getInt(0);
+            info.name = cursor.getString(1);
+            info.description = cursor.getString(2);
+            info.price = cursor.getFloat(3);
+            info.picPath = cursor.getString(4);
+            list.add(info);
+        }
+        cursor.close();
+        return list;
+    }
+
+    // 添加商品到购物车
+    public void insertCartInfo(int goodsId) {
+        CartInfo cartInfo = queryCartInfoByGoodsId(goodsId);
+        ContentValues values = new ContentValues();
+        values.put("goods_id", goodsId);
+        if (cartInfo == null) {
+            values.put("count", 1);
+            mWDB.insert(TABLE_CART_INFO, null, values);
+        } else {
+            values.put("_id", cartInfo.id);
+            values.put("count", ++cartInfo.count);
+            mWDB.update(TABLE_CART_INFO, values, "_id=?", new String[]{String.valueOf(cartInfo.id)});
+        }
+
+    }
+
+    private CartInfo queryCartInfoByGoodsId(int goodsId) {
+        Cursor cursor = mRDB.query(TABLE_CART_INFO, null, "goods_id=?", new String[]{String.valueOf(goodsId)}, null, null, null);
+        CartInfo info = null;
+        if (cursor.moveToNext()) {
+            info = new CartInfo();
+            info.id = cursor.getInt(0);
+            info.goodsId = cursor.getInt(1);
+            info.count = cursor.getInt(2);
+        }
+        return info;
+    }
+
+    // 统计购物车商品的总数
+    public int countCartInfo() {
+        int count = 0;
+        String sql = "select sum(count) from " + TABLE_CART_INFO;
+        Cursor cursor = mRDB.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            count = cursor.getInt(0);
+        }
+        return count;
+    }
+
+    // 查询购物车中的所有信息
+    public List<CartInfo> queryAllCartInfo() {
+        String sql = "SELECT * FROM " + TABLE_CART_INFO;
+        List<CartInfo> list = new ArrayList<>();
+        Cursor cursor = mRDB.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            CartInfo info = new CartInfo();
+            info.id = cursor.getInt(0);
+            info.goodsId = cursor.getInt(1);
+            info.count = cursor.getInt(2);
+            list.add(info);
+        }
+        cursor.close();
+        return list;
+    }
+
+    public GoodsInfo queryGoodsInfoById(int goodsId) {
+        GoodsInfo info = null;
+        Cursor cursor = mRDB.query(TABLE_GOODS_INFO, null, "_id=?", new String[]{String.valueOf(goodsId)}, null, null, null);
+        if (cursor.moveToNext()) {
+            info = new GoodsInfo();
+            info.id = cursor.getInt(0);
+            info.name = cursor.getString(1);
+            info.description = cursor.getString(2);
+            info.price = cursor.getFloat(3);
+            info.picPath = cursor.getString(4);
+        }
+
+        return info;
+    }
+
+    public void deleteCartInfoByGoodsId(int goodsId) {
+        mWDB.delete(TABLE_CART_INFO, "goods_id=?", new String[]{String.valueOf(goodsId)});
+    }
+
+    public void deleteAllCartInfo() {
+        mWDB.delete(TABLE_CART_INFO, "1=1", null);
+    }
 }
+
+
+
+
+
+
+
+
+
