@@ -42,7 +42,7 @@ public class ShoppingChannelActivity extends AppCompatActivity implements View.O
         });
 
         TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText("手机商场");
+        tv_title.setText("吃冰星期六");
 
         tv_count = findViewById(R.id.tv_count);
         gl_Channel = findViewById(R.id.gl_channel);

@@ -10,4 +10,5 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="orange">#ffffdd</color>
     <color name="red">#ff0000</color>
+    <color name="item_cart_background">#EFF1B1</color>
 </resources>

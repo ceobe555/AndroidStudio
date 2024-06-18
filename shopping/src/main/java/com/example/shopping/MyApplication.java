@@ -38,6 +38,7 @@ public class MyApplication extends Application {
         boolean isFirst = SharedUtil.getInstance(this).readBoolean("first", true);
         // 获取当前App的私有下载路径
         String directory = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + File.separatorChar;
+
         if (isFirst) {
             // 模拟网络图片下载
             List<GoodsInfo> list = GoodsInfo.getDefaultList();

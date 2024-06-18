@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/orange"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".ShoppingCartActivity">
 
     <include layout="@layout/title_shopping" />
@@ -151,7 +152,7 @@
                     android:gravity="center"
                     android:text="购物车空空如也，快去选购商品吧"
                     android:textColor="@color/black"
-                    android:textSize="17sp"/>
+                    android:textSize="15sp"/>
 
                 <Button
                     android:id="@+id/btn_shopping_channel"

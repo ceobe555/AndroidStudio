@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/white"
+    android:background="@color/orange"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:text="小米手机" />
 
     <ImageView
@@ -26,8 +26,8 @@
         android:src="@drawable/ceobe" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -37,8 +37,8 @@
             android:layout_weight="2"
             android:gravity="center"
             android:textColor="@color/red"
-            android:textSize="15sp"
-            android:text="20"/>
+            android:textSize="12sp"
+            android:text="2000"/>
 
         <Button
             android:id="@+id/btn_add"
@@ -48,7 +48,7 @@
             android:gravity="center"
             android:text="加入购物车"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 

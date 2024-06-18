@@ -78,6 +78,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
         // 查询购物车数据库表中的所有商品记录
         mCartList = mDBHelper.queryAllCartInfo();
         if (mCartList.size() == 0) {
+            ll_empty.setVisibility(View.VISIBLE);
             return;
         }
 

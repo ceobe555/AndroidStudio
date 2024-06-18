@@ -15,27 +15,33 @@ public class GoodsInfo {
 
     // 声明一个手机商品的名称数组
     private static String[] mNameArray = {
-      "iPhone11", "Mate30", "小米10", "OPPO Reno3", "vivo X30", "荣耀30S"
+      "红豆冰", "哈密瓜冰", "凤梨冰", "甜筒", "刨冰", "绵绵冰", "芒果冰", "碎冰冰", "上口爱"
     };
     // 声明一个手机商品的描述数组
     private static String[] mDescArray = {
-        "Apple iPhone11 256GB",
-        "华为 HUAWEI Mate30 8GB+256GB",
-        "小米 MI10 8GB+128GB",
-        "OPPO Reno3 8GB+128GB",
-        "vivo X30 8GB+128GB 5G全网通",
-        "荣耀30S 8GB+128GB 5G芯片"
+        "地址：萍水街细冰",
+        "地址：萍水街细冰",
+        "地址：萍水街细冰",
+        "网络图片",
+        "网络图片",
+        "网络图片",
+        "网络图片",
+        "网络图片",
+        "网络图片"
     };
     private static float[] mPriceArray = {
-            6299, 4999, 3999, 2999, 2998, 2399
+            18, 30, 40, 20, 28, 48, 33, 7, 5
     };
     private static int[] mPicArray = {
-            R.drawable.ceobe,
-            R.drawable.fengdi,
-            R.drawable.ling,
-            R.drawable.ling2,
-            R.drawable.nian,
-            R.drawable.shu
+            R.drawable.ice_red_bean,
+            R.drawable.ice_hami_melon,
+            R.drawable.ice_pineapple,
+            R.drawable.ice_1,
+            R.drawable.ice_2,
+            R.drawable.ice_3,
+            R.drawable.ice_4,
+            R.drawable.ice_sbb,
+            R.drawable.ice_ski
     };
     // 获取默认的手机信息列表
     public static ArrayList<GoodsInfo> getDefaultList() {
