@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "AppDevelopment"
 include(":app")
 include(":shopping")
+include(":billapp")

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BillApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_footer">FooterActivity</string>
+    <string name="title_home">首页</string>
+    <string name="title_statistics">统计</string>
+    <string name="title_my">我的</string>
+</resources>

@@ -4,6 +4,7 @@ public class CartInfo {
     public int id;
     public int goodsId;
     public int count;
+    public GoodsInfo goods;
 
     public CartInfo() {}
 
@@ -11,5 +12,6 @@ public class CartInfo {
         this.id = id;
         this.goodsId = goodsId;
         this.count = count;
+        this.goods = new GoodsInfo();
     }
 }

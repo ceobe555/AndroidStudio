@@ -5,9 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.shopping.adapter.CartAdapter;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,16 +29,17 @@ import entities.CartInfo;
 import entities.GoodsInfo;
 import util.ToastUtil;
 
-public class ShoppingCartActivity extends AppCompatActivity implements View.OnClickListener {
+public class ShoppingCartActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private TextView tv_count;
-    private LinearLayout ll_cart;
+    private ListView lv_cart;
     private LinearLayout ll_empty;
     private LinearLayout ll_content;
     private ShoppingDBHelper mDBHelper;
     private List<CartInfo> mCartList;
     private TextView tv_total_price;
     private HashMap<Integer, GoodsInfo> mGoodsMap = new HashMap<>();
+    private CartAdapter mCartAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +53,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
 
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText("购物车");
-        ll_cart = findViewById(R.id.ll_cart);
+        lv_cart = findViewById(R.id.lv_cart);
         ll_empty = findViewById(R.id.ll_empty);
         ll_content = findViewById(R.id.ll_content);
 
@@ -74,7 +79,6 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
 
     // 展示购物车中的商品列表
     private void showCart() {
-        ll_cart.removeAllViews();
         // 查询购物车数据库表中的所有商品记录
         mCartList = mDBHelper.queryAllCartInfo();
         if (mCartList.size() == 0) {
@@ -86,44 +90,15 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
             // 根据商品编号查询商品数据库中的商品记录
             GoodsInfo goods = mDBHelper.queryGoodsInfoById(info.goodsId);
             mGoodsMap.put(info.goodsId, goods);
-
-            View view = LayoutInflater.from(this).inflate(R.layout.item_cart, null);
-            ImageView iv_thumb = view.findViewById(R.id.iv_thumb);
-            TextView tv_name = view.findViewById(R.id.tv_name);
-            TextView tv_desc = view.findViewById(R.id.tv_desc);
-            TextView tv_count = view.findViewById(R.id.tv_count);
-            TextView tv_price = view.findViewById(R.id.tv_price);
-            TextView tv_sum = view.findViewById(R.id.tv_sum);
-
-            iv_thumb.setImageURI(Uri.parse(goods.picPath));
-            tv_name.setText(goods.name);
-            tv_desc.setText(goods.description);
-            tv_count.setText(String.valueOf(info.count));
-            tv_price.setText(String.valueOf((int)goods.price));
-
-            tv_sum.setText(String.valueOf((int) (info.count * goods.price)));
-
-            // 给商品行添加长按事件，长按商品行就删除该商品
-            view.setOnLongClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingCartActivity.this);
-                builder.setMessage("是否从购物车删除" + goods.name + "? ");
-                builder.setPositiveButton("是", (dialog, which) -> {
-                   ll_cart.removeView(v);
-                   deleteGoods(info);
-                });
-                builder.setNegativeButton("否", null);
-                builder.create().show();
-                return true;
-            });
-
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(ShoppingCartActivity.this, ShoppingDetailActivity.class);
-                intent.putExtra("goods_id", goods.id);
-                startActivity(intent);
-            });
-
-            ll_cart.addView(view);
+            info.goods = goods;
         }
+        mCartAdapter = new CartAdapter(this, mCartList);
+        lv_cart.setAdapter(mCartAdapter);
+        // 给商品行添加点击事件
+        lv_cart.setOnItemClickListener(this);
+
+        // 给商品行添加长按事件
+        lv_cart.setOnItemLongClickListener(this);
 
         refreshTotalPrice();
     }
@@ -154,7 +129,8 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
         if (MyApplication.getInstance().goodsCount == 0) {
             ll_empty.setVisibility(View.VISIBLE);
             ll_content.setVisibility(View.GONE);
-            ll_cart.removeAllViews();
+            // 通知适配器发生数据变化
+            mCartAdapter.notifyDataSetChanged();
         } else {
             ll_content.setVisibility(View.VISIBLE);
             ll_empty.setVisibility(View.GONE);
@@ -190,5 +166,28 @@ public class ShoppingCartActivity extends AppCompatActivity implements View.OnCl
             builder.setPositiveButton("我知道了", null);
             builder.create().show();
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(ShoppingCartActivity.this, ShoppingDetailActivity.class);
+        intent.putExtra("goods_id", mCartList.get(position).goodsId);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        CartInfo info = mCartList.get(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingCartActivity.this);
+        builder.setMessage("是否从购物车删除" + info.goods.name + "? ");
+        builder.setPositiveButton("是", (dialog, which) -> {
+            mCartList.remove(position);
+            // 通知适配器发生数据变化
+            mCartAdapter.notifyDataSetChanged();
+            deleteGoods(info);
+        });
+        builder.setNegativeButton("否", null);
+        builder.create().show();
+        return true;
     }
 }
