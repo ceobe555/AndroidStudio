@@ -7,12 +7,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppDevelopment">
+        android:theme="@style/Theme.Design.Light">
         <activity
             android:name=".BillAddActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BillPagerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

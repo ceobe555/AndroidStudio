@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/billapp" />
+            <option value="$PROJECT_DIR$/ledgerapp" />
             <option value="$PROJECT_DIR$/shopping" />
           </set>
         </option>
