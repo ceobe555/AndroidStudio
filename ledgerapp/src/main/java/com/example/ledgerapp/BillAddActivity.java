@@ -3,9 +3,12 @@ package com.example.ledgerapp;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,7 +17,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ledgerapp.Database.LedgerDBHelper;
+import com.example.ledgerapp.Entity.BillInfo;
 import com.example.ledgerapp.Util.DateUtil;
+import com.example.ledgerapp.Util.ToastUtil;
 
 import java.util.Calendar;
 
@@ -25,6 +31,8 @@ public class BillAddActivity extends AppCompatActivity implements View.OnClickLi
     private EditText et_remark;
     private EditText et_amount;
     private Calendar calendar;
+    private Spinner sp_type;
+    private LedgerDBHelper mDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +43,28 @@ public class BillAddActivity extends AppCompatActivity implements View.OnClickLi
         TextView tv_title = findViewById(R.id.tv_title);
         TextView tv_option = findViewById(R.id.tv_option);
         tv_title.setText("请填写账单");
-        tv_option.setText("回到首页");
+        tv_option.setText("");
 
         tv_date = findViewById(R.id.tv_date);
         rg_type = findViewById(R.id.rg_type);
+        sp_type = findViewById(R.id.sp_type);
         et_remark = findViewById(R.id.et_remark);
         et_amount = findViewById(R.id.et_amount);
         // 显示现在的日期
         calendar = Calendar.getInstance();
         tv_date.setText(DateUtil.getDate(calendar));
 
-        // for Database
+        // 设置类型的下拉菜单
+        String[] aTypes = getResources().getStringArray(R.array.bill_type);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, aTypes);
+        sp_type.setAdapter(typeAdapter);
 
+        // for Database
+        mDBHelper = LedgerDBHelper.getInstance(this);
+        mDBHelper.openReadLink();
+        mDBHelper.openWriteLink();
 
         tv_date.setOnClickListener(this);
-        tv_option.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.btn_save).setOnClickListener(this);
     }
@@ -66,10 +81,17 @@ public class BillAddActivity extends AppCompatActivity implements View.OnClickLi
             dialog.show();
         }
         else if (v.getId() == R.id.btn_save) {
+            BillInfo bill = new BillInfo();
+            bill.date = tv_date.getText().toString();
+            bill.bExpenses = rg_type.getCheckedRadioButtonId() == R.id.rb_income ?
+                    BillInfo.BILL_TYPE_INCOME : BillInfo.BILL_TYPE_COST;
+            bill.type = sp_type.getSelectedItemPosition();
+            bill.remark = et_remark.getText().toString();
+            bill.amount = Double.parseDouble(et_amount.getText().toString());
 
-        }
-        else if (v.getId() == R.id.tv_option) {
-
+            if (mDBHelper.save(bill) > 0) {
+                ToastUtil.show(this,"添加账单成功！");
+            }
         }
         else if (v.getId() == R.id.iv_back) {
             finish();
@@ -84,4 +106,6 @@ public class BillAddActivity extends AppCompatActivity implements View.OnClickLi
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         tv_date.setText(DateUtil.getDate(calendar));
     }
+
+
 }
