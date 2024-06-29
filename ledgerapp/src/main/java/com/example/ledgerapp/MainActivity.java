@@ -92,6 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        initViewPager();
+    }
+
+    @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         // 更新日期的文本显示
         calendar.set(Calendar.YEAR, year);
