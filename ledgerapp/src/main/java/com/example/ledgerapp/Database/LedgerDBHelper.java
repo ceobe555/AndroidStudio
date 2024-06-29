@@ -2,12 +2,16 @@ package com.example.ledgerapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
 import com.example.ledgerapp.Entity.BillInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LedgerDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "ledger.db";
@@ -80,4 +84,41 @@ public class LedgerDBHelper extends SQLiteOpenHelper {
         cv.put("remark", bill.remark);
         return mWDB.insert(TABLE_BILLS_INFO, null, cv);
     }
+
+    public List<BillInfo> queryByMonth(String yearMonth) {
+        List<BillInfo> list = new ArrayList<>();
+        String sql = "select * from " + TABLE_BILLS_INFO +
+                " where date like '" + yearMonth + "%'";
+        Cursor cursor = mRDB.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            BillInfo bill = new BillInfo();
+            int index = cursor.getColumnIndex("_id");
+            if (index >= 0) {
+                bill.id = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("date");
+            if (index >= 0) {
+                bill.date = cursor.getString(index);
+            }
+            index = cursor.getColumnIndex("bExpenses");
+            if (index >= 0) {
+                bill.bExpenses = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("type");
+            if (index >= 0) {
+                bill.type = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("amount");
+            if (index >= 0) {
+                bill.amount = cursor.getDouble(index);
+            }
+            index = cursor.getColumnIndex("remark");
+            if (index >= 0) {
+                bill.remark = cursor.getString(index);
+            }
+            list.add(bill);
+        }
+        return list;
+    }
+
 }
