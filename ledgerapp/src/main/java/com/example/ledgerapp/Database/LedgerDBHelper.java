@@ -85,6 +85,10 @@ public class LedgerDBHelper extends SQLiteOpenHelper {
         return mWDB.insert(TABLE_BILLS_INFO, null, cv);
     }
 
+    public int DeleteBillItem(long id) {
+        return mWDB.delete(TABLE_BILLS_INFO, "_id=?", new String[] {Long.toString(id)});
+    }
+
     public List<BillInfo> queryByMonth(String yearMonth) {
         List<BillInfo> list = new ArrayList<>();
         String sql = "select * from " + TABLE_BILLS_INFO +

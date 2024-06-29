@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,16 +21,19 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.ledgerapp.Adapter.BillPagerAdapter;
 import com.example.ledgerapp.Database.LedgerDBHelper;
+import com.example.ledgerapp.Fragment.BillFragment;
 import com.example.ledgerapp.Util.DateUtil;
+import com.example.ledgerapp.Util.ToastUtil;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, BillFragment.OnBillFragmentListener {
 
     private TextView tv_month;
     private Calendar calendar;
     private LedgerDBHelper mDBHelper;
     private ViewPager vp_bill;
+    private ListView lv_bill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // 初始化翻页视图
-    private void initViewPager() {
+    public void initViewPager() {
         PagerTabStrip pts_bill = findViewById(R.id.pts_bill);
         pts_bill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
         vp_bill = findViewById(R.id.vp_bill);
