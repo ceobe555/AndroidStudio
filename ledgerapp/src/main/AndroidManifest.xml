@@ -9,12 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".StatisticActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BillModifyActivity"
-            android:exported="false" />
-        <activity
             android:name=".BillAddActivity"
             android:exported="false" />
         <activity

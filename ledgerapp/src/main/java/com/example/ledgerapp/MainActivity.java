@@ -1,6 +1,5 @@
 package com.example.ledgerapp;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -14,11 +13,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -68,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tv_option.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
-        findViewById(R.id.tv_statistics).setOnClickListener(this);
 
         tv_month = findViewById(R.id.tv_month);
         Drawable ic_clock = getDrawable(R.drawable.ic_clock);
@@ -83,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDBHelper.openWriteLink();
 
         initViewPager();
-
-
     }
 
     @Override
@@ -128,11 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH));
                     dialog.show();
-        }
-        else if (v.getId() == R.id.tv_statistics) {
-            Intent intent = new Intent(this, StatisticActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
         }
     }
 
