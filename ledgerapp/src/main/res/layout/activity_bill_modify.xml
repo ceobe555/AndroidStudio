@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".BillAddActivity">
+    tools:context=".BillModifyActivity">
 
     <include layout="@layout/header_ledger" />
 
@@ -152,11 +152,11 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_modify"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:textColor="@color/black"
-        android:text="保存"
+        android:text="修改"
         android:textSize="17sp" />
 
 
