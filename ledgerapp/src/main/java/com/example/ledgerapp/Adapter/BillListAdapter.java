@@ -1,6 +1,7 @@
 package com.example.ledgerapp.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +57,15 @@ public class BillListAdapter extends BaseAdapter {
         BillInfo bill = mBillList.get(position);
         holder.tv_date.setText(bill.date);
         holder.tv_remark.setText(bill.remark);
-        holder.tv_amount.setText(String.format("%s%.2f元", bill.bExpenses == 0 ?
-                "+" : "-", bill.amount));
+        if (bill.bExpenses == 0) {
+            holder.tv_amount.setTextColor(Color.RED);
+            holder.tv_amount.setText(String.format("%s%.2f元", "+", bill.amount));
+        }
+        else if (bill.bExpenses == 1) {
+            holder.tv_amount.setTextColor(Color.BLACK);
+            holder.tv_amount.setText(String.format("%s%.2f元", "-", bill.amount));
+        }
+
         String[] aTypes = convertView.getResources().getStringArray(R.array.bill_type);
         holder.tv_type.setText(aTypes[bill.type]);
 

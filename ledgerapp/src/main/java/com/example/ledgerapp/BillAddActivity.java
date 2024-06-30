@@ -91,6 +91,7 @@ public class BillAddActivity extends AppCompatActivity implements View.OnClickLi
 
             if (mDBHelper.save(bill) > 0) {
                 ToastUtil.show(this,"添加账单成功！");
+                finish();
             }
         }
         else if (v.getId() == R.id.iv_back) {

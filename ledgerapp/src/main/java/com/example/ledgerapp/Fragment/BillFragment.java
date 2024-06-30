@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -12,13 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.ledgerapp.Adapter.BillListAdapter;
 import com.example.ledgerapp.Adapter.BillPagerAdapter;
 import com.example.ledgerapp.Database.LedgerDBHelper;
 import com.example.ledgerapp.Entity.BillInfo;
 import com.example.ledgerapp.R;
+import com.example.ledgerapp.Util.DateUtil;
 import com.example.ledgerapp.Util.ToastUtil;
 
 import java.util.Calendar;
@@ -32,12 +36,15 @@ import java.util.List;
 public class BillFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private LedgerDBHelper mDBHelper;
-    private OnBillFragmentListener mListener;
+    private BillListAdapter adapter;
+    private ListView lv_bill;
+    private String mYearMonth;
 
-    public static Fragment newInstance(String yearMonth) {
+    public static Fragment newInstance(int year, int month) {
         BillFragment fragment = new BillFragment();
         Bundle args = new Bundle();
-        args.putString("yearMonth", yearMonth);
+        args.putInt("year", year);
+        args.putInt("month", month);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,15 +54,17 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bill, container, false);
-        ListView lv_bill = view.findViewById(R.id.lv_bill);
+        lv_bill = view.findViewById(R.id.lv_bill);
         mDBHelper = LedgerDBHelper.getInstance(getContext());
         Bundle arguments = getArguments();
-        String yearMonth = arguments.getString("yearMonth");
+        int year = arguments.getInt("year");
+        int month = arguments.getInt("month");
+        String zeroMonth = month < 10 ? "0" + month : String.valueOf(month);
+        mYearMonth = year + "-" + zeroMonth;
 
-        List<BillInfo> billInfoList = mDBHelper.queryByMonth(yearMonth);
-        BillListAdapter adapter = new BillListAdapter(getContext(), billInfoList);
+        List<BillInfo> billInfoList = mDBHelper.queryByMonth(mYearMonth);
+        adapter = new BillListAdapter(getContext(), billInfoList);
         lv_bill.setAdapter(adapter);
-
         lv_bill.setOnItemLongClickListener(this);
 
         return view;
@@ -70,7 +79,11 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
         builder.setPositiveButton("确定", (dialog, which) -> {
             if (mDBHelper.DeleteBillItem(id) > 0) {
                 ToastUtil.show(getContext(),"删除成功！");
-                mListener.initViewPager();
+
+                List<BillInfo> billInfoList = mDBHelper.queryByMonth(mYearMonth);
+                adapter = new BillListAdapter(getContext(), billInfoList);
+                lv_bill.setAdapter(adapter);
+                lv_bill.setOnItemLongClickListener(this);
             }
 
 
@@ -81,27 +94,5 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
         AlertDialog dialog = builder.create();
         dialog.show();
         return true;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof OnBillFragmentListener) {
-            mListener = (OnBillFragmentListener) context;
-        }
-        else {
-            throw new RuntimeException(context.toString()
-                + "must implements OnBillFragmentListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnBillFragmentListener {
-        void initViewPager();
     }
 }

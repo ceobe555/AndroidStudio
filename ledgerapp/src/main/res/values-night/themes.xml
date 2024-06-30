@@ -1,7 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AppDevelopment" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.AppDevelopment" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#aaaaff</item>
+        <item name="android:windowIsTranslucent">true</item>
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/footer</item>
     </style>
 </resources>
