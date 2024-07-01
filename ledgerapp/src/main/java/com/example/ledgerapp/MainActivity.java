@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_option.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.tv_statistics).setOnClickListener(this);
+        findViewById(R.id.tv_mine).setOnClickListener(this);
 
         tv_month = findViewById(R.id.tv_month);
         Drawable ic_clock = getDrawable(R.drawable.ic_clock);
@@ -139,6 +140,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (v.getId() == R.id.tv_statistics) {
             Intent intent = new Intent(this, StatisticActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        else if (v.getId() == R.id.tv_mine) {
+            Intent intent = new Intent(this, MineActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }

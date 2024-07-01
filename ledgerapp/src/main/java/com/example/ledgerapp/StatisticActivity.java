@@ -60,6 +60,7 @@ public class StatisticActivity extends AppCompatActivity implements View.OnClick
         tv_year_net_income = findViewById(R.id.tv_year_net_income);
 
         findViewById(R.id.tv_home).setOnClickListener(this);
+        findViewById(R.id.tv_mine).setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.tv_option).setOnClickListener(this);
         findViewById(R.id.tv_month).setOnClickListener(this);
@@ -100,16 +101,16 @@ public class StatisticActivity extends AppCompatActivity implements View.OnClick
         tv_month_net_income.setText(String.valueOf(dMonthNetIncome));
 
         // compute year income and expenses
-//        billInfoList = mDBHelper.queryByYear(year);
-//        for (int ii = 0; ii < billInfoList.size(); ii++) {
-//            BillInfo bill = billInfoList.get(ii);
-//            if (bill.bExpenses == 0) {
-//                dYearIncome += bill.amount;
-//            }
-//            else {
-//                dYearExpenses += bill.amount;
-//            }
-//        }
+        billInfoList = mDBHelper.queryByYear(year);
+        for (int ii = 0; ii < billInfoList.size(); ii++) {
+            BillInfo bill = billInfoList.get(ii);
+            if (bill.bExpenses == 0) {
+                dYearIncome += bill.amount;
+            }
+            else {
+                dYearExpenses += bill.amount;
+            }
+        }
         dYearNetIncome = dYearIncome - dYearExpenses;
         tv_year_income.setText(String.valueOf(dYearIncome));
         tv_year_expenses.setText(String.valueOf(dYearExpenses));
@@ -122,12 +123,12 @@ public class StatisticActivity extends AppCompatActivity implements View.OnClick
         if (v.getId() == R.id.tv_home || v.getId() == R.id.iv_back) {
             finish();
         }
-        if (v.getId() == R.id.tv_option) {
+        else if (v.getId() == R.id.tv_option) {
             Intent intent = new Intent(this, BillAddActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
-        if (v.getId() == R.id.tv_month) {
+        else if (v.getId() == R.id.tv_month) {
             DatePickerDialog dialog = new DatePickerDialog(
                     this,
                     this,
@@ -135,6 +136,11 @@ public class StatisticActivity extends AppCompatActivity implements View.OnClick
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
+        }
+        else if (v.getId() == R.id.tv_mine) {
+            Intent intent = new Intent(this, MineActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
