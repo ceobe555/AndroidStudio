@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -83,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDBHelper.openWriteLink();
 
         initViewPager();
-
-
     }
 
     @Override
@@ -108,6 +107,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPagerAdapter = new BillPagerAdapter(this, calendar.get(Calendar.YEAR));
         vp_bill.setAdapter(mPagerAdapter);
         vp_bill.setCurrentItem(calendar.get(Calendar.MONTH));
+        vp_bill.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                // 更新日期的文本显示
+                calendar.set(Calendar.MONTH, position);
+                tv_month.setText(DateUtil.getMonth(calendar));
+            }
+        });
     }
 
     @Override
@@ -152,4 +160,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+
 }

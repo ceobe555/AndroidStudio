@@ -93,8 +93,6 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
                 lv_bill.setAdapter(adapter);
                 lv_bill.setOnItemLongClickListener(this);
             }
-
-
         });
         builder.setNegativeButton("取消", (dialog, which) -> {
 
