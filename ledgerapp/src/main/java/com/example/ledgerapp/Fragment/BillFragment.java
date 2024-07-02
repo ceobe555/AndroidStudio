@@ -1,7 +1,6 @@
 package com.example.ledgerapp.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,24 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ledgerapp.Adapter.BillListAdapter;
 import com.example.ledgerapp.Adapter.BillPagerAdapter;
-import com.example.ledgerapp.BillAddActivity;
-import com.example.ledgerapp.BillModifyActivity;
 import com.example.ledgerapp.Database.LedgerDBHelper;
 import com.example.ledgerapp.Entity.BillInfo;
 import com.example.ledgerapp.MainActivity;
 import com.example.ledgerapp.R;
 import com.example.ledgerapp.Util.DateUtil;
 import com.example.ledgerapp.Util.ToastUtil;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +34,7 @@ import java.util.List;
  * Use the {@link BillFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BillFragment extends Fragment implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+public class BillFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private LedgerDBHelper mDBHelper;
     private BillListAdapter adapter;
@@ -74,7 +67,6 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
         adapter = new BillListAdapter(getContext(), billInfoList);
         lv_bill.setAdapter(adapter);
         lv_bill.setOnItemLongClickListener(this);
-        lv_bill.setOnItemClickListener(this);
 
         return view;
     }
@@ -104,28 +96,5 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
         AlertDialog dialog = builder.create();
         dialog.show();
         return true;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(view.getContext(), BillModifyActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // 获取点击的bill item的数据并传给BillModifyActivity
-        Bundle bundle = new Bundle();
-        TextView tv_date = view.findViewById(R.id.tv_date);
-        TextView tv_type = view.findViewById(R.id.tv_type);
-        TextView tv_remark = view.findViewById(R.id.tv_remark);
-        TextView tv_amount = view.findViewById(R.id.tv_amount);
-
-        bundle.putLong("id", id);
-        bundle.putString("date", tv_date.getText().toString());
-        bundle.putString("type", tv_type.getText().toString());
-        bundle.putString("remark", tv_remark.getText().toString());
-        bundle.putString("amount", tv_amount.getText().toString());
-
-        intent.putExtras(bundle);
-
-        startActivity(intent);
     }
 }
