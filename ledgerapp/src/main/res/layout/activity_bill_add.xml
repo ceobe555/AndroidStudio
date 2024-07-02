@@ -54,7 +54,7 @@
         <RadioButton
             android:id="@+id/rb_income"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="false"
             android:gravity="start|center"
@@ -65,7 +65,7 @@
         <RadioButton
             android:id="@+id/rb_cost"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
             android:gravity="start|center"
