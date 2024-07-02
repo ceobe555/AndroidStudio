@@ -3,6 +3,8 @@
     <string name="home">首页</string>
     <string name="statistics">数据统计</string>
     <string name="my">我的</string>
+    <string name="income">收入: </string>
+    <string name="expenses">支出: </string>
     <string-array name="bill_type">
         <item>餐饮</item>
         <item>交通</item>

@@ -92,7 +92,7 @@ public class LedgerDBHelper extends SQLiteOpenHelper {
     public List<BillInfo> queryByMonth(String yearMonth) {
         List<BillInfo> list = new ArrayList<>();
         String sql = "select * from " + TABLE_BILLS_INFO +
-                " where date like '" + yearMonth + "%'";
+                " where date like '" + yearMonth + "%' order by date desc";
         Cursor cursor = mRDB.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             BillInfo bill = new BillInfo();
@@ -128,7 +128,78 @@ public class LedgerDBHelper extends SQLiteOpenHelper {
     public List<BillInfo> queryByYear(int year) {
         List<BillInfo> list = new ArrayList<>();
         String sql = "select * from " + TABLE_BILLS_INFO +
-                " where date like '" + year + "%'";
+                " where date like '" + year + "%' order by date desc";
+        Cursor cursor = mRDB.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            BillInfo bill = new BillInfo();
+            int index = cursor.getColumnIndex("_id");
+            if (index >= 0) {
+                bill.id = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("date");
+            if (index >= 0) {
+                bill.date = cursor.getString(index);
+            }
+            index = cursor.getColumnIndex("bExpenses");
+            if (index >= 0) {
+                bill.bExpenses = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("type");
+            if (index >= 0) {
+                bill.type = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("amount");
+            if (index >= 0) {
+                bill.amount = cursor.getDouble(index);
+            }
+            index = cursor.getColumnIndex("remark");
+            if (index >= 0) {
+                bill.remark = cursor.getString(index);
+            }
+            list.add(bill);
+        }
+        return list;
+    }
+
+    public List<BillInfo> queryByDate(String date) {
+        List<BillInfo> list = new ArrayList<>();
+        String sql = "select * from " + TABLE_BILLS_INFO +
+                " where date like '" + date + "%' order by date desc";
+        Cursor cursor = mRDB.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            BillInfo bill = new BillInfo();
+            int index = cursor.getColumnIndex("_id");
+            if (index >= 0) {
+                bill.id = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("date");
+            if (index >= 0) {
+                bill.date = cursor.getString(index);
+            }
+            index = cursor.getColumnIndex("bExpenses");
+            if (index >= 0) {
+                bill.bExpenses = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("type");
+            if (index >= 0) {
+                bill.type = cursor.getInt(index);
+            }
+            index = cursor.getColumnIndex("amount");
+            if (index >= 0) {
+                bill.amount = cursor.getDouble(index);
+            }
+            index = cursor.getColumnIndex("remark");
+            if (index >= 0) {
+                bill.remark = cursor.getString(index);
+            }
+            list.add(bill);
+        }
+        return list;
+    }
+
+    public List<BillInfo> queryAllBill() {
+        List<BillInfo> list = new ArrayList<>();
+        String sql = "select * from " + TABLE_BILLS_INFO;
         Cursor cursor = mRDB.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             BillInfo bill = new BillInfo();

@@ -26,6 +26,7 @@ import com.example.ledgerapp.BillAddActivity;
 import com.example.ledgerapp.BillModifyActivity;
 import com.example.ledgerapp.Database.LedgerDBHelper;
 import com.example.ledgerapp.Entity.BillInfo;
+import com.example.ledgerapp.MainActivity;
 import com.example.ledgerapp.R;
 import com.example.ledgerapp.Util.DateUtil;
 import com.example.ledgerapp.Util.ToastUtil;
@@ -92,6 +93,9 @@ public class BillFragment extends Fragment implements AdapterView.OnItemLongClic
                 adapter = new BillListAdapter(getContext(), billInfoList);
                 lv_bill.setAdapter(adapter);
                 lv_bill.setOnItemLongClickListener(this);
+
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.updateBills();
             }
         });
         builder.setNegativeButton("取消", (dialog, which) -> {

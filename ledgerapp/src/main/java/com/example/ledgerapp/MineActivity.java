@@ -11,8 +11,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ledgerapp.Database.LedgerDBHelper;
+import com.example.ledgerapp.Entity.BillInfo;
+
+import java.util.List;
+
 public class MineActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private LedgerDBHelper mDBHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +34,25 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.tv_home).setOnClickListener(this);
         findViewById(R.id.tv_statistics).setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
+
+        mDBHelper = LedgerDBHelper.getInstance(this);
+        mDBHelper.openReadLink();
+        mDBHelper.openWriteLink();
+
+        TextView tv_balance = findViewById(R.id.tv_balance);
+        double dBalance = 0.0;
+        // compute balance
+        List<BillInfo> billInfoList = mDBHelper.queryAllBill();
+        for (int ii = 0; ii < billInfoList.size(); ii++) {
+            BillInfo bill = billInfoList.get(ii);
+            if (bill.bExpenses == 0) {
+                dBalance += bill.amount;
+            }
+            else {
+                dBalance -= bill.amount;
+            }
+        }
+        tv_balance.setText(String.valueOf(dBalance));
     }
 
     @Override

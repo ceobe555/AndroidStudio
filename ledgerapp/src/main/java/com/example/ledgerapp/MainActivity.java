@@ -31,6 +31,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.ledgerapp.Adapter.BillPagerAdapter;
 import com.example.ledgerapp.Database.LedgerDBHelper;
+import com.example.ledgerapp.Entity.BillInfo;
 import com.example.ledgerapp.Fragment.BillFragment;
 import com.example.ledgerapp.Util.DateUtil;
 import com.example.ledgerapp.Util.ToastUtil;
@@ -38,6 +39,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tab.setText((position + 1) + "月份")).attach();
     }
 
-    private void updateBills() {
+    public void updateBills() {
         mPagerAdapter = new BillPagerAdapter(this, calendar.get(Calendar.YEAR));
         vp_bill.setAdapter(mPagerAdapter);
         vp_bill.setCurrentItem(calendar.get(Calendar.MONTH));
@@ -117,6 +119,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tv_month.setText(DateUtil.getMonth(calendar));
             }
         });
+
+        TextView tv_day_income = findViewById(R.id.tv_day_income);
+        TextView tv_day_expenses = findViewById(R.id.tv_day_expenses);
+        double dDayIncome = 0, dDayExpenses = 0;
+        // get system date
+        calendar = Calendar.getInstance();
+        String date = DateUtil.getDate(calendar);
+
+        // compute day income and expenses
+        List<BillInfo> billInfoList = mDBHelper.queryByDate(date);
+        for (int ii = 0; ii < billInfoList.size(); ii++) {
+            BillInfo bill = billInfoList.get(ii);
+            if (bill.bExpenses == 0) {
+                dDayIncome += bill.amount;
+            }
+            else {
+                dDayExpenses += bill.amount;
+            }
+        }
+
+        tv_day_income.setText(String.valueOf(dDayIncome));
+        tv_day_expenses.setText(String.valueOf(dDayExpenses));
     }
 
     @Override

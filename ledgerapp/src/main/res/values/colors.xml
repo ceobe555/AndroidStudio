@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#00FF00</color>
     <color name="red">#FF0000</color>
+    <color name="blue">#49C5F6</color>
     <color name="home_background">#ECECEC</color>
     <color name="header">#aaaaff</color>
     <color name="footer">#FFFFFF</color>
